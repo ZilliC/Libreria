@@ -26,8 +26,15 @@ struct libro {
     char editorial[31];
     int unidades;
 };
+int select=0;
+
 
 int main(void) {
+    do {
+        printf("Menu\nSelecciona una opcion\n1. Alta de libro\n2. Consultar libro\n3. Listar libros\n4. Editar libro\n5. Baja de libro\n0. Salir\n\n");
+        
+    } while (select!=0);
+    printf("Gracias por tu visita\n¡Vuelve pronto!\n\n");
     return 0;
 }
 
