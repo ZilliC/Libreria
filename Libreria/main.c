@@ -1,8 +1,23 @@
+//Inclusion de librerias
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
 
+// Definicion de estructuras
+struct libro {
+    char clave[7];
+    char isbn[14];
+    char titulo[31];
+    char autor[31];
+    char anio[5];
+    char genero[31];
+    char editorial[31];
+    int unidades;
+};
+
+// Definicion de variables
+int select=0;
 
 // Funcion para limpiar el buffer del teclado
 void limpiarBuffer(void) {
@@ -15,24 +30,53 @@ void quitarSaltoLinea(char *cadena) {
     cadena[strcspn(cadena, "\n")] = '\0';
 }
 
-// Definicion de estructura
-struct libro {
-    char clave[7];
-    char isbn[14];
-    char titulo[31];
-    char autor[31];
-    char anio[5];
-    char genero[31];
-    char editorial[31];
-    int unidades;
-};
-int select=0;
+
+//Funcioines del menu
+void altaLibro(void){
+    printf("opcion1\n");
+}
+void consultaLibro(void){
+    printf("opcion2\n");
+}
+void listaLibro(void){
+    printf("opcion3\n");
+}
+void editaLibro(void){
+    printf("opcion4\n");
+}
+void bajaLibro(void){
+    printf("opcion5\n");
+}
+
+
 
 
 int main(void) {
     do {
-        printf("Menu\nSelecciona una opcion\n1. Alta de libro\n2. Consultar libro\n3. Listar libros\n4. Editar libro\n5. Baja de libro\n0. Salir\n\n");
-        
+        printf("Menu\nSelecciona una opcion\n1. Alta de libro\n2. Consultar libro\n3. Listar libros\n4. Editar libro\n5. Baja de libro\n0. Salir\n");
+        scanf("%d",&select);
+        switch (select) {
+            case 1:
+                altaLibro();
+                break;
+            case 2:
+                consultaLibro();
+                break;
+            case 3:
+                listaLibro();
+                break;
+            case 4:
+                editaLibro();
+                break;
+            case 5:
+                bajaLibro();
+                break;
+            case 0:
+                break;
+            default:
+                printf("Opcion no valida, intenta de nuevo");
+                break;
+        }
     } while (select!=0);
     printf("Gracias por tu visita\n¡Vuelve pronto!\n\n");
     return 0;
