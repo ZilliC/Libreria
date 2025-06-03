@@ -74,7 +74,7 @@ int main(void) {
             case 0:
                 break;
             default:
-                printf("Opcion no valida, intenta de nuevo");
+                printf("Opcion no valida, intenta de nuevo\n");
                 break;
         }
     } while (select!=0);
