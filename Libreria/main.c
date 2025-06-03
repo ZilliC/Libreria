@@ -33,19 +33,19 @@ void quitarSaltoLinea(char *cadena) {
 
 //Funcioines del menu
 void altaLibro(void){
-    printf("opcion1\n");
+    printf("Seleccionaste la opcion 1 Alta de libro\n");
 }
 void consultaLibro(void){
-    printf("opcion2\n");
+    printf("Seleccionaste la opcion 2 Consultar libro\n");
 }
 void listaLibro(void){
-    printf("opcion3\n");
+    printf("Seleccionaste la opcion 3 Listar libros\n");
 }
 void editaLibro(void){
-    printf("opcion4\n");
+    printf("Seleccionaste la opcion 4 Editar libro\n");
 }
 void bajaLibro(void){
-    printf("opcion5\n");
+    printf("Seleccionaste la opcion 5 Baja de libro\n");
 }
 
 
@@ -81,9 +81,6 @@ int main(void) {
     printf("Gracias por tu visita\n¡Vuelve pronto!\n\n");
     return 0;
 }
-
-//Paul es puto
-
 
 
 /*
