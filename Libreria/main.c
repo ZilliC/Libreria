@@ -34,6 +34,64 @@ void quitarSaltoLinea(char *cadena) {
 //Funcioines del menu
 void altaLibro(void){
     printf("Seleccionaste la opcion 1 Alta de libro\n");
+    struct libro nuevoLibro;
+        FILE *archivo;
+
+        limpiarBuffer(); // Limpia buffer antes de pedir datos con fgets
+
+        printf("Ingresa la clave: ");
+        fgets(nuevoLibro.clave, sizeof(nuevoLibro.clave), stdin);
+        quitarSaltoLinea(nuevoLibro.clave);
+
+        printf("Ingresa el ISBN: ");
+        fgets(nuevoLibro.isbn, sizeof(nuevoLibro.isbn), stdin);
+        quitarSaltoLinea(nuevoLibro.isbn);
+
+        printf("Ingresa el titulo: ");
+        fgets(nuevoLibro.titulo, sizeof(nuevoLibro.titulo), stdin);
+        quitarSaltoLinea(nuevoLibro.titulo);
+
+        printf("Ingresa el autor: ");
+        fgets(nuevoLibro.autor, sizeof(nuevoLibro.autor), stdin);
+        quitarSaltoLinea(nuevoLibro.autor);
+
+        printf("Ingresa el anio: ");
+        fgets(nuevoLibro.anio, sizeof(nuevoLibro.anio), stdin);
+        quitarSaltoLinea(nuevoLibro.anio);
+
+        printf("Ingresa el genero: ");
+        fgets(nuevoLibro.genero, sizeof(nuevoLibro.genero), stdin);
+        quitarSaltoLinea(nuevoLibro.genero);
+
+        printf("Ingresa la editorial: ");
+        fgets(nuevoLibro.editorial, sizeof(nuevoLibro.editorial), stdin);
+        quitarSaltoLinea(nuevoLibro.editorial);
+
+        printf("Ingresa el numero de unidades: ");
+        scanf("%d", &nuevoLibro.unidades);
+        limpiarBuffer();
+
+        // Abrir el archivo para agregar
+        archivo = fopen("libros.txt", "a");
+        if (archivo == NULL) {
+            printf("Error al abrir el archivo.\n");
+            return;
+        }
+
+        // Guardar los datos en una sola línea separados por tabuladores
+        fprintf(archivo, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%d\n",
+                nuevoLibro.clave,
+                nuevoLibro.isbn,
+                nuevoLibro.titulo,
+                nuevoLibro.autor,
+                nuevoLibro.anio,
+                nuevoLibro.genero,
+                nuevoLibro.editorial,
+                nuevoLibro.unidades);
+
+        fclose(archivo);
+
+        printf("Libro guardado correctamente en el archivo.\n");
 }
 void consultaLibro(void){
     printf("Seleccionaste la opcion 2 Consultar libro\n");
