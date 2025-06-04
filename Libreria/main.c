@@ -18,6 +18,7 @@ struct libro {
 
 // Definicion de variables
 int select=0;
+FILE *archivo;
 
 // Funcion para limpiar el buffer del teclado
 void limpiarBuffer(void) {
@@ -34,7 +35,45 @@ void quitarSaltoLinea(char *cadena) {
 //Funcioines del menu
 void altaLibro(void){
     printf("Seleccionaste la opcion 1 Alta de libro\n");
+    struct libro nuevo;
+    if ((archivo = fopen("libros.DAT", "ab" )) == NULL )
+         { printf("\nNo se pudo abrir el archivo");
+           exit( 0 );
+         }
+    printf("Escribe la clave (Max 6)\n");
+    scanf("%6s", nuevo.clave);
+    limpiarBuffer();
+    printf("Escribe el ISBN (Max 13)\n");
+    scanf("%13s", nuevo.isbn);
+    limpiarBuffer();
+    printf("Escribe el titulo (Max 30)\n");
+    fgets(nuevo.titulo, sizeof(nuevo.titulo), stdin);
+    quitarSaltoLinea(nuevo.titulo);
+    printf("Escribe el autor (Max 30)\n");
+    fgets(nuevo.autor, sizeof(nuevo.autor), stdin);
+    quitarSaltoLinea(nuevo.autor);
+    printf("Escribe el anio (Max 4)\n");
+    scanf("%4s",nuevo.anio);
+    limpiarBuffer();
+    printf("Escribe el genero (Max 30)\n");
+    fgets(nuevo.genero, sizeof(nuevo.genero), stdin);
+    quitarSaltoLinea(nuevo.genero);
+    printf("Escribe la editorial (Max 30)\n");
+    fgets(nuevo.editorial, sizeof(nuevo.editorial), stdin);
+    quitarSaltoLinea(nuevo.editorial);
+    printf("Escribe las unidades (entero)\n");
+    scanf("%d", &nuevo.unidades);
+    limpiarBuffer();
     
+    fprintf(archivo, "%s ", nuevo.clave);
+    fprintf(archivo, "%s ", nuevo.isbn);
+    fprintf(archivo, "%s ", nuevo.titulo);
+    fprintf(archivo, "%s ", nuevo.autor);
+    fprintf(archivo, "%s ", nuevo.anio);
+    fprintf(archivo, "%s ", nuevo.genero);
+    fprintf(archivo, "%s ", nuevo.editorial);
+    fprintf(archivo, "%d\n", nuevo.unidades);
+    fclose(archivo);
 }
 void consultaLibro(void){
     printf("Seleccionaste la opcion 2 Consultar libro\n");
