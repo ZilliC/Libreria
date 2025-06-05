@@ -37,47 +37,139 @@ void quitarSaltoLinea(char *cadena) {
 void altaLibro(void){
     printf("Seleccionaste la opcion 1 Alta de libro\n");
 
-    if ((archivo = fopen("libros.DAT", "ab" )) == NULL )
-         { printf("\nNo se pudo abrir el archivo");
-           exit( 0 );
-         }
+    if ((archivo = fopen("libros.DAT", "ab")) == NULL) {
+        printf("\nNo se pudo abrir el archivo");
+        exit(0);
+    }
+
+    // --- Lectura de clave ---
     printf("Escribe la clave (Max 6)\n");
-    scanf("%6s", activo.clave);
-    limpiarBuffer();
+    if (fgets(activo.clave, sizeof activo.clave, stdin)) {
+        if (strchr(activo.clave, '\n')) {
+            quitarSaltoLinea(activo.clave);
+        } else {
+            limpiarBuffer(); // quedó '\n' pendiente
+        }
+    }
+
+    // --- Lectura de ISBN ---
     printf("Escribe el ISBN (Max 13)\n");
-    scanf("%13s", activo.isbn);
-    limpiarBuffer();
+    if (fgets(activo.isbn, sizeof activo.isbn, stdin)) {
+        if (strchr(activo.isbn, '\n')) {
+            quitarSaltoLinea(activo.isbn);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
+    // --- Lectura de título ---
     printf("Escribe el titulo (Max 30)\n");
-    fgets(activo.titulo, sizeof(activo.titulo), stdin);
-    quitarSaltoLinea(activo.titulo);
+    if (fgets(activo.titulo, sizeof activo.titulo, stdin)) {
+        if (strchr(activo.titulo, '\n')) {
+            quitarSaltoLinea(activo.titulo);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
+    // Resto de campos con el mismo patrón...
     printf("Escribe el autor (Max 30)\n");
-    fgets(activo.autor, sizeof(activo.autor), stdin);
-    quitarSaltoLinea(activo.autor);
+    if (fgets(activo.autor, sizeof activo.autor, stdin)) {
+        if (strchr(activo.autor, '\n')) {
+            quitarSaltoLinea(activo.autor);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
     printf("Escribe el anio (Max 4)\n");
-    scanf("%4s",activo.anio);
-    limpiarBuffer();
+    if (fgets(activo.anio, sizeof activo.anio, stdin)) {
+        if (strchr(activo.anio, '\n')) {
+            quitarSaltoLinea(activo.anio);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
     printf("Escribe el genero (Max 30)\n");
-    fgets(activo.genero, sizeof(activo.genero), stdin);
-    quitarSaltoLinea(activo.genero);
+    if (fgets(activo.genero, sizeof activo.genero, stdin)) {
+        if (strchr(activo.genero, '\n')) {
+            quitarSaltoLinea(activo.genero);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
     printf("Escribe la editorial (Max 30)\n");
-    fgets(activo.editorial, sizeof(activo.editorial), stdin);
-    quitarSaltoLinea(activo.editorial);
+    if (fgets(activo.editorial, sizeof activo.editorial, stdin)) {
+        if (strchr(activo.editorial, '\n')) {
+            quitarSaltoLinea(activo.editorial);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
+    // Lectura de unidades con scanf, luego limpiar buffer
     printf("Escribe las unidades (entero)\n");
     scanf("%d", &activo.unidades);
     limpiarBuffer();
-    
-    fprintf(archivo, "%s ", activo.clave);
-    fprintf(archivo, "%s ", activo.isbn);
-    fprintf(archivo, "%s ", activo.titulo);
-    fprintf(archivo, "%s ", activo.autor);
-    fprintf(archivo, "%s ", activo.anio);
-    fprintf(archivo, "%s ", activo.genero);
-    fprintf(archivo, "%s ", activo.editorial);
-    fprintf(archivo, "%d\n", activo.unidades);
+
+    fwrite(&activo, sizeof(activo), 1, archivo);
     fclose(archivo);
+    /* fprintf(archivo, "%s ", activo.clave);
+     fprintf(archivo, "%s ", activo.isbn);
+     fprintf(archivo, "%s ", activo.titulo);
+     fprintf(archivo, "%s ", activo.autor);
+     fprintf(archivo, "%s ", activo.anio);
+     fprintf(archivo, "%s ", activo.genero);
+     fprintf(archivo, "%s ", activo.editorial);
+     fprintf(archivo, "%d\n", activo.unidades);*/
 }
-void consultaLibro(void){
-    printf("Seleccionaste la opcion 2 Consultar libro\n");
+
+void consultaLibro(void) {
+    char claveBusca[7];
+    int encontrado = 0;
+
+    printf("Seleccionaste la opción 2: Consultar libro\n");
+
+    if ((archivo = fopen("libros.DAT", "rb")) == NULL) {
+        printf("\nNo se pudo abrir el archivo de libros.\n");
+        return;
+    }
+
+    // Pedir la clave a buscar
+    printf("Escribe la clave del libro a consultar (Max 6 caracteres):\n");
+    if (fgets(claveBusca, sizeof claveBusca, stdin)) {
+        if (strchr(claveBusca, '\n')) {
+            quitarSaltoLinea(claveBusca);
+        } else {
+            limpiarBuffer();
+        }
+    }
+
+    // Recorrer el archivo hasta encontrar la clave
+    while (fread(&activo, sizeof(activo), 1, archivo) == 1) {
+        if (strcmp(activo.clave, claveBusca) == 0) {
+            // Libro encontrado: mostrar todos los campos
+            printf("\n--- Datos del libro encontrado ---\n");
+            printf("Clave:     %s\n", activo.clave);
+            printf("ISBN:      %s\n", activo.isbn);
+            printf("Título:    %s\n", activo.titulo);
+            printf("Autor:     %s\n", activo.autor);
+            printf("Año:       %s\n", activo.anio);
+            printf("Género:    %s\n", activo.genero);
+            printf("Editorial: %s\n", activo.editorial);
+            printf("Unidades:  %d\n\n", activo.unidades);
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("\nNo se encontró ningún libro con la clave \"%s\".\n\n", claveBusca);
+    }
+
+    fclose(archivo);
 }
 void listaLibro(void){
     /*printf("Seleccionaste la opcion 3 Listar libros\n");
@@ -98,7 +190,7 @@ void listaLibro(void){
         }
     }
 
-    fclose(archivo);*/
+    fclose(archivo);   */
 }
 void editaLibro(void){
     printf("Seleccionaste la opcion 4 Editar libro\n");
@@ -114,6 +206,7 @@ int main(void) {
     do {
         printf("Menu\nSelecciona una opcion\n1. Alta de libro\n2. Consultar libro\n3. Listar libros\n4. Editar libro\n5. Baja de libro\n0. Salir\n");
         scanf("%d",&select);
+        limpiarBuffer();
         switch (select) {
             case 1:
                 altaLibro();
