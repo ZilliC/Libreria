@@ -19,6 +19,7 @@ struct libro {
 // Definicion de variables
 int select=0;
 FILE *archivo;
+struct libro activo;
 
 // Funcion para limpiar el buffer del teclado
 void limpiarBuffer(void) {
@@ -35,51 +36,69 @@ void quitarSaltoLinea(char *cadena) {
 //Funcioines del menu
 void altaLibro(void){
     printf("Seleccionaste la opcion 1 Alta de libro\n");
-    struct libro nuevo;
+
     if ((archivo = fopen("libros.DAT", "ab" )) == NULL )
          { printf("\nNo se pudo abrir el archivo");
            exit( 0 );
          }
     printf("Escribe la clave (Max 6)\n");
-    scanf("%6s", nuevo.clave);
+    scanf("%6s", activo.clave);
     limpiarBuffer();
     printf("Escribe el ISBN (Max 13)\n");
-    scanf("%13s", nuevo.isbn);
+    scanf("%13s", activo.isbn);
     limpiarBuffer();
     printf("Escribe el titulo (Max 30)\n");
-    fgets(nuevo.titulo, sizeof(nuevo.titulo), stdin);
-    quitarSaltoLinea(nuevo.titulo);
+    fgets(activo.titulo, sizeof(activo.titulo), stdin);
+    quitarSaltoLinea(activo.titulo);
     printf("Escribe el autor (Max 30)\n");
-    fgets(nuevo.autor, sizeof(nuevo.autor), stdin);
-    quitarSaltoLinea(nuevo.autor);
+    fgets(activo.autor, sizeof(activo.autor), stdin);
+    quitarSaltoLinea(activo.autor);
     printf("Escribe el anio (Max 4)\n");
-    scanf("%4s",nuevo.anio);
+    scanf("%4s",activo.anio);
     limpiarBuffer();
     printf("Escribe el genero (Max 30)\n");
-    fgets(nuevo.genero, sizeof(nuevo.genero), stdin);
-    quitarSaltoLinea(nuevo.genero);
+    fgets(activo.genero, sizeof(activo.genero), stdin);
+    quitarSaltoLinea(activo.genero);
     printf("Escribe la editorial (Max 30)\n");
-    fgets(nuevo.editorial, sizeof(nuevo.editorial), stdin);
-    quitarSaltoLinea(nuevo.editorial);
+    fgets(activo.editorial, sizeof(activo.editorial), stdin);
+    quitarSaltoLinea(activo.editorial);
     printf("Escribe las unidades (entero)\n");
-    scanf("%d", &nuevo.unidades);
+    scanf("%d", &activo.unidades);
     limpiarBuffer();
     
-    fprintf(archivo, "%s ", nuevo.clave);
-    fprintf(archivo, "%s ", nuevo.isbn);
-    fprintf(archivo, "%s ", nuevo.titulo);
-    fprintf(archivo, "%s ", nuevo.autor);
-    fprintf(archivo, "%s ", nuevo.anio);
-    fprintf(archivo, "%s ", nuevo.genero);
-    fprintf(archivo, "%s ", nuevo.editorial);
-    fprintf(archivo, "%d\n", nuevo.unidades);
+    fprintf(archivo, "%s ", activo.clave);
+    fprintf(archivo, "%s ", activo.isbn);
+    fprintf(archivo, "%s ", activo.titulo);
+    fprintf(archivo, "%s ", activo.autor);
+    fprintf(archivo, "%s ", activo.anio);
+    fprintf(archivo, "%s ", activo.genero);
+    fprintf(archivo, "%s ", activo.editorial);
+    fprintf(archivo, "%d\n", activo.unidades);
     fclose(archivo);
 }
 void consultaLibro(void){
     printf("Seleccionaste la opcion 2 Consultar libro\n");
 }
 void listaLibro(void){
-    printf("Seleccionaste la opcion 3 Listar libros\n");
+    /*printf("Seleccionaste la opcion 3 Listar libros\n");
+    if ((archivo = fopen("libros.DAT", "rb" )) == NULL )
+         { printf("\nNo se pudo abrir el archivo");
+           exit( 0 );
+         }
+    printf("\n========== ===================== === ========== =========");
+    printf("\nCLAVE     DESCRIPCION          EX.  PRECIO    IMPORTE");
+    printf("\n========== ===================== === ========== =========");
+
+    while (!feof(archivo)) {
+        if (fscanf(archivo, "%6s %13s",
+                   activo.clave, activo.isbn) == 5)
+        {
+            printf("\n%-6s %-20s %3d %10.2f %10.2f",
+                   clave, desc, exis, precio, importe);
+        }
+    }
+
+    fclose(archivo);*/
 }
 void editaLibro(void){
     printf("Seleccionaste la opcion 4 Editar libro\n");
@@ -121,56 +140,3 @@ int main(void) {
     printf("Gracias por tu visita\n¡Vuelve pronto!\n\n");
     return 0;
 }
-
-
-/*
-struct libro emp;
-
-printf("Ingresa el nombre: ");
-fgets(emp.nombre, sizeof(emp.nombre), stdin);
-quitarSaltoLinea(emp.nombre);
-
-printf("Ingresa el apellido paterno: ");
-fgets(emp.apaterno, sizeof(emp.apaterno), stdin);
-quitarSaltoLinea(emp.apaterno);
-
-printf("Ingresa el apellido materno: ");
-fgets(emp.amaterno, sizeof(emp.amaterno), stdin);
-quitarSaltoLinea(emp.amaterno);
-
-printf("Ingresa el departamento: ");
-fgets(emp.depto, sizeof(emp.depto), stdin);
-quitarSaltoLinea(emp.depto);
-
-printf("Ingresa el puesto: ");
-fgets(emp.puesto, sizeof(emp.puesto), stdin);
-quitarSaltoLinea(emp.puesto);
-
-printf("Ingresa el salario diario: ");
-scanf("%f", &emp.sdiario);
-limpiarBuffer();
-
-printf("Ingresa el numero de dias trabajados: ");
-scanf("%d", &emp.diastrab);
-limpiarBuffer();
-
-printf("Ingresa la fecha de nacimiento (dd mm aaaa): ");
-scanf("%d %d %d", &emp.nac.dia, &emp.nac.mes, &emp.nac.anhos);
-limpiarBuffer();
-
-printf("Ingresa la fecha de ingreso (dd mm aaaa): ");
-scanf("%d %d %d", &emp.ings.dia, &emp.ings.mes, &emp.ings.anhos);
-limpiarBuffer();
-
-Mostrar los datos
-printf("\n--- Datos del Empleado ---\n");
-printf("Nombre: %s\n", emp.nombre);
-printf("Apellido Paterno: %s\n", emp.apaterno);
-printf("Apellido Materno: %s\n", emp.amaterno);
-printf("Departamento: %s\n", emp.depto);
-printf("Puesto: %s\n", emp.puesto);
-printf("Salario Diario: %.2f\n", emp.sdiario);
-printf("Dias trabajados: %d\n", emp.diastrab);
-printf("Fecha de nacimiento: %02d/%02d/%04d\n", emp.nac.dia, emp.nac.mes, emp.nac.anhos);
-printf("Fecha de ingreso: %02d/%02d/%04d\n", emp.ings.dia, emp.ings.mes, emp.ings.anhos);
-*/
